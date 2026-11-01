@@ -1,0 +1,7 @@
+packages:
+  - .
+
+# TanStack Queryの互換層。必要な依存のスクリプトだけを許可する。
+allowBuilds:
+  esbuild: true
+  vue-demi: true

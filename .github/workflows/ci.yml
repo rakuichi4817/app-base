@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Lint・型チェック・テスト・ビルド
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: jdx/mise-action@5228313ee0372e111a38da051671ca30fc5a96db # v3
+      - name: 依存の導入
+        run: mise run install
+      - name: 基本検証
+        run: mise run check
+      - name: ライセンスの一次検査
+        run: mise run license
+      - name: Storybookのビルド
+        run: mise run storybook:build
+      - name: ブラウザーの準備
+        run: |
+          mise run browser:deps
+          mise run browser:install
+      - name: Storyの操作・アクセシビリティ検査
+        run: mise run storybook:test

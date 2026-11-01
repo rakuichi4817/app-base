@@ -1,0 +1,82 @@
+min_version = "2026.6.6"
+monorepo_root = true
+
+[monorepo]
+config_roots = ["projects/core", "projects/app/backend", "projects/app/frontend"]
+
+[tools]
+python = "3.14.10"
+uv = "0.13.6"
+node = "24.22.2"
+pnpm = "12.15.0"
+
+[tasks.install]
+description = "全プロジェクトの依存をロックどおりに導入する"
+depends = ["//projects/core:install", "//projects/app/backend:install", "//projects/app/frontend:install"]
+
+[tasks.dev]
+description = "FastAPIとVueを並列起動する（Ctrl+Cで終了）"
+run = "mise run --jobs 2 //projects/app/backend:dev ::: //projects/app/frontend:dev"
+
+[tasks.lint]
+description = "全プロジェクトのLint・整形確認・型チェック"
+depends = ["//projects/core:lint", "//projects/app/backend:lint", "//projects/app/frontend:lint"]
+
+[tasks.format]
+description = "全プロジェクトの整形・Lint自動修正"
+depends = ["//projects/core:format", "//projects/app/backend:format", "//projects/app/frontend:format"]
+
+[tasks.test]
+description = "Pythonとフロントエンドのテスト"
+depends = ["//projects/core:test", "//projects/app/backend:test", "//projects/app/frontend:test"]
+
+[tasks.build]
+description = "フロントエンドの型チェックと本番ビルド"
+depends = ["//projects/app/frontend:build"]
+
+[tasks.check]
+description = "CIと同じ基本検証"
+run = [{ task = "lint" }, { task = "test" }, { task = "build" }]
+
+[tasks."docker:check"]
+description = "Compose設定の構文検証"
+run = "docker compose config --quiet"
+
+[tasks."docker:build"]
+description = "VueとPythonを単一の本番用イメージへビルドする"
+run = "docker compose build app"
+
+[tasks."docker:up"]
+description = "イメージをビルドして起動し、ヘルスチェックの成功を待つ"
+run = "docker compose up --build --detach --wait --wait-timeout 120"
+
+[tasks."docker:down"]
+description = "このComposeのコンテナーとネットワークを削除する（イメージは保持）"
+run = "docker compose down"
+
+[tasks."lock:refresh"]
+description = "現在の依存制約からロックを再解決する（既存版優先）"
+run = [
+  "uv lock --project projects/core",
+  "uv lock --project projects/app/backend",
+  "pnpm --dir projects/app/frontend install --lockfile-only",
+]
+
+[tasks.storybook]
+depends = ["//projects/app/frontend:storybook"]
+
+[tasks."storybook:build"]
+depends = ["//projects/app/frontend:storybook:build"]
+
+[tasks."storybook:test"]
+depends = ["//projects/app/frontend:storybook:test"]
+
+[tasks."browser:install"]
+depends = ["//projects/app/frontend:browser:install"]
+
+[tasks."browser:deps"]
+depends = ["//projects/app/frontend:browser:deps"]
+
+[tasks.license]
+description = "依存一覧を生成してライセンス方針と照合する"
+depends = ["//projects/core:license", "//projects/app/backend:license", "//projects/app/frontend:license"]

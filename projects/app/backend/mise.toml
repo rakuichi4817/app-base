@@ -1,0 +1,27 @@
+[tasks.install]
+description = "backendの依存を導入する"
+run = "uv sync --locked"
+
+[tasks.dev]
+description = "FastAPIをリロード付きで起動する"
+run = "uv run --locked uvicorn app_base_backend.main:app --reload --host 127.0.0.1 --port 8000"
+
+[tasks.lint]
+description = "Ruff・整形確認・ty"
+run = ["uv run --locked ruff check .", "uv run --locked ruff format --check .", "uv run --locked ty check"]
+
+[tasks.format]
+description = "Ruffの自動修正・整形"
+run = ["uv run --locked ruff check --fix .", "uv run --locked ruff format ."]
+
+[tasks.test]
+description = "FastAPIのAPIテスト"
+run = "uv run --locked pytest"
+
+[tasks.license]
+description = "backendの依存ライセンスを一覧保存・一次検査する"
+run = [
+  "mkdir -p reports",
+  "uv run --locked --group license pip-licenses --format=json --with-urls --output-file=reports/licenses.json --ignore-packages app-base-core app-base-backend",
+  "uv run --locked --group license pip-licenses --allow-only='MIT;MIT License;Apache-2.0;Apache Software License;BSD-2-Clause;BSD-3-Clause;BSD License;PSF-2.0;Python Software Foundation License;Apache-2.0 OR BSD-2-Clause' --ignore-packages app-base-core app-base-backend",
+]

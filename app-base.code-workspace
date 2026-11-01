@@ -1,0 +1,40 @@
+{
+  "folders": [
+    { "name": "root", "path": "." },
+    { "name": "core", "path": "projects/core" },
+    { "name": "backend", "path": "projects/app/backend" },
+    { "name": "frontend", "path": "projects/app/frontend" }
+  ],
+  "settings": {
+    "editor.formatOnSave": true,
+    "python.languageServer": "None",
+    "python.terminal.activateEnvironment": false,
+    "ty.disableLanguageServices": false,
+    "ty.importStrategy": "fromEnvironment",
+    "ruff.importStrategy": "fromEnvironment",
+    "[typescript][javascript][vue][json][jsonc][css][html][yaml][markdown]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.codeActionsOnSave": { "source.fixAll.eslint": "explicit" }
+    },
+    "eslint.workingDirectories": [{ "mode": "auto" }],
+    "prettier.requireConfig": true,
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true,
+    "[markdown]": { "files.trimTrailingWhitespace": false },
+    "search.exclude": { "**/.venv": true, "**/node_modules": true, "**/dist": true }
+  },
+  "extensions": {
+    "recommendations": [
+      "hverlin.mise-vscode",
+      "tamasfe.even-better-toml",
+      "ms-python.python",
+      "charliermarsh.ruff",
+      "astral-sh.ty",
+      "vue.volar",
+      "esbenp.prettier-vscode",
+      "dbaeumer.vscode-eslint",
+      "bradlc.vscode-tailwindcss"
+    ],
+    "unwantedRecommendations": ["ms-python.vscode-pylance"]
+  }
+}
