@@ -94,6 +94,8 @@ Vitestはjsdomで動作します。APIクライアントの正常・HTTP失敗�
 
 ## Storybook
 
+Story用のVitest設定は独立したVite設定なので、VueとTailwindのプラグインを明示します。Storybookのビルド成功だけでは、ブラウザーテスト側の変換設定が正しいことは保証されません。
+
 Vue部品をAPIから独立して確認します。`GreetingResult` は表示の責務を持ち、取得状態はComposable、通信はAPIクライアントが担当します。クラス列の重複削減だけで部品化しません。
 
 ```sh
