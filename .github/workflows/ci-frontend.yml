@@ -1,0 +1,55 @@
+name: 【CI】フロントエンド
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-frontend-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: フロントエンドの検証
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: 変更対象の判定
+        id: changes
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          git diff --no-renames --name-only "$BASE_SHA" HEAD > "$RUNNER_TEMP/changed-files"
+          if grep -Eq '^(projects/app/frontend/|mise\.toml$|\.github/workflows/)' "$RUNNER_TEMP/changed-files"; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: jdx/mise-action@f5be966e4a917d54244728e6a5fdcd1d93a35e6c # v5.2.6
+        if: github.event_name != 'pull_request' || steps.changes.outputs.run == 'true'
+      - name: 依存の導入
+        if: github.event_name != 'pull_request' || steps.changes.outputs.run == 'true'
+        run: mise run //projects/app/frontend:install
+      - name: Lint・型チェック
+        if: github.event_name != 'pull_request' || steps.changes.outputs.run == 'true'
+        run: mise run //projects/app/frontend:lint
+      - name: テスト
+        if: github.event_name != 'pull_request' || steps.changes.outputs.run == 'true'
+        run: mise run //projects/app/frontend:test
+      - name: ビルド
+        if: github.event_name != 'pull_request' || steps.changes.outputs.run == 'true'
+        run: mise run //projects/app/frontend:build
+      - name: ライセンスの一次検査
+        if: github.event_name != 'pull_request' || steps.changes.outputs.run == 'true'
+        run: mise run //projects/app/frontend:license
+      - name: Storybookのビルド
+        if: github.event_name != 'pull_request' || steps.changes.outputs.run == 'true'
+        run: mise run //projects/app/frontend:storybook:build

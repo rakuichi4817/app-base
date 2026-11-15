@@ -4,6 +4,8 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    commit-message:
+      prefix: "依存関係の更新："
     open-pull-requests-limit: 5
   - package-ecosystem: uv
     directories:
@@ -11,15 +13,27 @@ updates:
       - /projects/app/backend
     schedule:
       interval: weekly
+    commit-message:
+      prefix: "依存関係の更新："
     groups:
-      python:
+      python-patch:
         patterns: ["*"]
+        update-types: ["patch"]
+      python-minor:
+        patterns: ["*"]
+        update-types: ["minor"]
     open-pull-requests-limit: 5
   - package-ecosystem: npm
     directory: /projects/app/frontend
     schedule:
       interval: weekly
+    commit-message:
+      prefix: "依存関係の更新："
     groups:
-      frontend:
+      frontend-patch:
         patterns: ["*"]
+        update-types: ["patch"]
+      frontend-minor:
+        patterns: ["*"]
+        update-types: ["minor"]
     open-pull-requests-limit: 5
