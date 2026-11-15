@@ -28,15 +28,6 @@ run = "pnpm storybook"
 [tasks."storybook:build"]
 run = "pnpm build-storybook"
 
-[tasks."storybook:test"]
-run = "pnpm test-storybook"
-
-[tasks."browser:install"]
-run = "pnpm exec playwright install chromium"
-
-[tasks."browser:deps"]
-run = "pnpm exec playwright install-deps chromium"
-
 [tasks.license]
 description = "フロントエンドの依存ライセンスを一覧保存・一次検査する"
 run = [

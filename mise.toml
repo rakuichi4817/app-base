@@ -7,7 +7,7 @@ config_roots = ["projects/core", "projects/app/backend", "projects/app/frontend"
 [tools]
 python = "3.14.10"
 uv = "0.13.6"
-node = "24.22.2"
+node = "24.22.3"
 pnpm = "12.15.0"
 
 [tasks.install]
@@ -67,15 +67,6 @@ depends = ["//projects/app/frontend:storybook"]
 
 [tasks."storybook:build"]
 depends = ["//projects/app/frontend:storybook:build"]
-
-[tasks."storybook:test"]
-depends = ["//projects/app/frontend:storybook:test"]
-
-[tasks."browser:install"]
-depends = ["//projects/app/frontend:browser:install"]
-
-[tasks."browser:deps"]
-depends = ["//projects/app/frontend:browser:deps"]
 
 [tasks.license]
 description = "依存一覧を生成してライセンス方針と照合する"

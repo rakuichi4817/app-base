@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # Vueの成果物を作る。ツール版はルートmise.tomlと揃える。
-FROM node:24.22.2-bookworm-slim AS frontend-build
+FROM node:24.22.3-bookworm-slim AS frontend-build
 WORKDIR /build/projects/app/frontend
 RUN npm install --global pnpm@12.15.0
 COPY projects/app/frontend/package.json projects/app/frontend/pnpm-lock.yaml projects/app/frontend/pnpm-workspace.yaml ./

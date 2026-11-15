@@ -2,7 +2,7 @@
 
 Vue + TypeScript + Viteの最小アプリです。
 
-Storybookはルートで `mise run storybook`、検査は `mise run storybook:test`、OSS一覧は `mise run license` です。[TypeScript・VueのStorybook](../../../docs/TypeScript・Vue.md#storybook) のブラウザー準備を先に行ってください。
+Storybookはルートで `mise run storybook`、静的ビルドは `mise run storybook:build`、OSS一覧は `mise run license` です。使い方は [TypeScript・VueのStorybook](../../../docs/TypeScript・Vue.md#storybook) を参照してください。
 
 - ReKa UI（パッケージ名 `reka-ui`）：ラベルなどアクセシブルなUIプリミティブ
 - TanStack Query：APIの取得・キャッシュ・ローディング・エラー管理

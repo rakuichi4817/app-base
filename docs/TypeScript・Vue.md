@@ -49,6 +49,7 @@ Node.jsではtypesにnode、ESLint globalsにnodeを指定します。ブラウ�
 | SFCを含む型チェック | vue-tsc |
 
 ESLintはflat configです。`eslint-config-prettier` を最後に適用し、整形の競合を避けます。クラス順・折り返しのESLintルールも無効にし、Prettierへ統一します。
+Vueテンプレートのコンポーネント名は `<GreetingResult>` のようにPascalCaseとし、ESLintで検査します。HTML要素は対象外です。
 Prettierはタブを使用し、TailwindのCSSエントリーを明示しています。TypeScriptはstrictと `noUncheckedIndexedAccess` を有効にしています。
 
 ## Tailwindの余白
@@ -94,18 +95,13 @@ Vitestはjsdomで動作します。APIクライアントの正常・HTTP失敗�
 
 ## Storybook
 
-Story用のVitest設定は独立したVite設定なので、VueとTailwindのプラグインを明示します。Storybookのビルド成功だけでは、ブラウザーテスト側の変換設定が正しいことは保証されません。
-
 Vue部品をAPIから独立して確認します。`GreetingResult` は表示の責務を持ち、取得状態はComposable、通信はAPIクライアントが担当します。クラス列の重複削減だけで部品化しません。
 
 ```sh
 mise run storybook          # http://localhost:6006
 mise run storybook:build    # storybook-staticへ出力
-mise run browser:deps       # LinuxのOS依存。対話可能な端末で実行（sudoが必要）
-mise run browser:install    # Chromiumの導入
-mise run storybook:test     # 実ブラウザーでStoryのplayとa11y検査
 ```
 
-Storyは正常・読み込み中・未取得・通信失敗の代表状態を用意します。操作・assertはplayへ記載し、a11y違反はテスト失敗として扱います。自動検査は手動のキーボード・読み上げ確認を代替しません。
-jsdomのVitestは取得や状態の判断、Storyは部品の表示・操作、実APIとの結合は開発サーバーやDockerで確認し、同じ保証を重複させません。
-ブラウザーの導入は通常のinstallに混ぜません。Storybookの出力はアプリのdistとは別で、Dockerへ配布しません。
+Storyは正常・読み込み中・未取得・通信失敗の代表状態を用意します。アクセシビリティのアドオンは手動確認に使えますが、自動テストやキーボード・読み上げ確認の代わりにはなりません。
+jsdomのVitestは取得や状態の判断、Storybookは部品の表示確認に使います。実ブラウザーでの自動テストや実APIとのE2Eは含まれず、必要な場合に別途設計してください。
+Storybookの出力はアプリのdistとは別で、Dockerへ配布しません。

@@ -30,6 +30,7 @@ export default defineConfig([
 	{
 		files: ["**/*.vue"],
 		languageOptions: { parserOptions: { parser: tseslint.parser } },
+		rules: { "vue/component-name-in-template-casing": ["error", "PascalCase"] },
 	},
 	prettier,
 ]);

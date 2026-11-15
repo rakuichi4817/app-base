@@ -63,10 +63,10 @@ app-base/
 | `mise run lock:refresh` | ロックの再解決（既存版優先、全面アップグレードではない） |
 | `mise run storybook` | 表示部品のカタログを起動 |
 | `mise run storybook:build` | カタログの静的ビルド |
-| `mise run storybook:test` | ChromiumでStoryの操作・a11y検査（ブラウザー準備が必要） |
 | `mise run license` | 依存ライセンス一覧の生成・方針照合 |
 
 個別実行は `mise run //projects/core:test` など。全タスクは `mise tasks --all` で確認できます。
+CIはPython Core・Backend・フロントエンドに分かれ、PRでは変更対象に応じて検証します。詳細は[開発環境](docs/開発環境.md#ci)を参照してください。
 
 ## ガイド
 
